@@ -53,59 +53,67 @@
 
 
 
-
-package Two_Dimensional_Array;
 import java.util.Scanner;
-public class PrintSpiral {
-    public static void spiral(int [] [] arr) {
-        int currRow = 0;
-        int currCol = 0;
-        int rows = arr.length;
-        int cols = arr[0].length;
-        int count = 0;
-        int totalelements = rows * cols;
-        while (count < totalelements) {
-            for (int i = currCol; i < cols; i++) {
-                System.out.print(arr[currRow][i] + " ");
-                count++;
-            }
-            currRow++;
-            for (int i = currRow; i < rows; i++) {
-                System.out.print(arr[i][cols - 1] + " ");
-                count++;
-            }
-            cols--;
-            for (int i = cols - 1; i >= currCol; i--) {
-                System.out.print(arr[rows - 1][i] + " ");
-                count++;
-            }
-            rows--;
-            for (int i = rows - 1; i >= currRow ; i--) {
-                System.out.print(arr[i][currCol] + " ");
-                count++;
-            }
-            currCol++;
-        }
 
+class Main {
+    public static void spiralPrint(int[][] matrix, int rows, int columns) {
+        int top = 0;
+        int bottom = rows - 1;
+        int left = 0;
+        int right = columns - 1;
+        int direction = 0;
+        
+        while (top <= bottom && left <= right) {
+            if (direction == 0) {
+                // Print the top row from left to right
+                for (int i = left; i <= right; i++) {
+                    System.out.print(matrix[top][i] + " ");
+                }
+                top++;
+            } else if (direction == 1) {
+                // Print the right column from top to bottom
+                for (int i = top; i <= bottom; i++) {
+                    System.out.print(matrix[i][right] + " ");
+                }
+                right--;
+            } else if (direction == 2) {
+                // Print the bottom row from right to left
+                for (int i = right; i >= left; i--) {
+                    System.out.print(matrix[bottom][i] + " ");
+                }
+                bottom--;
+            } else if (direction == 3) {
+                // Print the left column from bottom to top
+                for (int i = bottom; i >= top; i--) {
+                    System.out.print(matrix[i][left] + " ");
+                }
+                left++;
+            }
+            
+            // Update the direction
+            direction = (direction + 1) % 4;
+        }
     }
 
-    public static int [] [] takeInput() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the number of rows: ");
-        int rows = sc.nextInt();
-        System.out.println("Enter the number of colums: ");
-        int cols = sc.nextInt();
-        int [][] arr2 = new int[rows][cols];
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                arr2[i][j] = sc.nextInt();
-            }
-        }
-        return arr2;
-    }
     public static void main(String[] args) {
-        int [] [] arr2 = takeInput();
-        spiral(arr2);
+        Scanner scanner = new Scanner(System.in);
+        int testCases = scanner.nextInt();
 
+        for (int t = 0; t < testCases; t++) {
+            int rows = scanner.nextInt();
+            int columns = scanner.nextInt();
+
+            int[][] matrix = new int[rows][columns];
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < columns; j++) {
+                    matrix[i][j] = scanner.nextInt();
+                }
+            }
+
+            spiralPrint(matrix, rows, columns);
+            System.out.println();
+        }
+
+        scanner.close();
     }
 }
