@@ -33,57 +33,48 @@
 // 0 2 3 6 9
 // 1 2 3 4
 
-
-
-
-package Array;
 import java.util.Scanner;
 
-public class SelectionSort {
-
-    public static void printArray(int [] arr) {
-        System.out.print("The sorted array is: ");
-        for (int i = 0; i < arr.length; i++) {
-            System.out.println(arr[i]);
-        }
-    }
-
-    public static int [] selectionSort(int [] arr) {
+class Main {
+    public static void selectionSort(int[] arr) {
         int n = arr.length;
-        int i = 0;
-        for (; i < n - 1; i++) {
-            int min = Integer.MAX_VALUE;
-            int minIndex = -1;
-
-            for (int j = i; j < n; j++) {
-                if ( arr[j] < min) {
-                    min = arr[j];
+        
+        for (int i = 0; i < n - 1; i++) {
+            int minIndex = i;
+            
+            for (int j = i + 1; j < n; j++) {
+                if (arr[j] < arr[minIndex]) {
                     minIndex = j;
                 }
             }
+            
+            // Swap the minimum element with the current element
             int temp = arr[minIndex];
             arr[minIndex] = arr[i];
             arr[i] = temp;
         }
-        return arr;
-    }
-
-    public static int [] takeInput(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the length of the array: ");
-        int n = sc.nextInt();
-        int [] arr = new int[n];
-        System.out.println("Enter the elements of the array: ");
-        for (int i = 0; i < n; i++) {
-            arr[i] = sc.nextInt();
-        }
-        return arr;
     }
 
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int testCases = scanner.nextInt();
 
-        int [] arr = takeInput();
-        int [] arr2 = selectionSort(arr);
-        printArray(arr2);
+        for (int t = 0; t < testCases; t++) {
+            int n = scanner.nextInt();
+            int[] arr = new int[n];
+
+            for (int i = 0; i < n; i++) {
+                arr[i] = scanner.nextInt();
+            }
+
+            selectionSort(arr);
+
+            for (int i = 0; i < n; i++) {
+                System.out.print(arr[i] + " ");
+            }
+            System.out.println();
+        }
+
+        scanner.close();
     }
 }
