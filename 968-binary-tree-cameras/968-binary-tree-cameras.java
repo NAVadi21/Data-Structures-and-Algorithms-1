@@ -14,25 +14,41 @@
  * }
  */
 class Solution {
+    private int cameras;
+
     public int minCameraCover(TreeNode root) {
-        int ans[] = solve(root);
-        return Math.min(ans[1],ans[2]);
+        cameras = 0;
+        // Add a dummy node as the parent of the root to simplify the logic
+        TreeNode dummy = new TreeNode(-1);
+        dummy.left = root;
+        
+        // Perform DFS starting from the dummy node
+        dfs(dummy);
+        
+        return cameras;
     }
     
-    public int[] solve(TreeNode node)
-    {
-        if(node == null)
-            return new int[]{0,0,9999};
-        int l[] = solve(node.left);
-        int r[] = solve(node.right);
+    private int dfs(TreeNode node) {
+        // Base case: if the node is null, return 0 (covered)
+        if (node == null) {
+            return 0;
+        }
         
-        int ml = Math.min(l[1],l[2]);
-        int mr = Math.min(r[1],r[2]);
+        int left = dfs(node.left);
+        int right = dfs(node.right);
         
-        int d0 = l[1]+r[1];
-        int d1 = Math.min(l[2]+mr , r[2]+ml);
-        int d2 = 1+Math.min(l[0],ml) + Math.min(r[0],mr);
+        // If either of the child nodes needs a camera, place a camera at this node
+        if (left == 0 || right == 0) {
+            cameras++;
+            return 1; // Node is covered but not monitored
+        }
         
-        return new int[]{d0,d1,d2};
+        // If both child nodes are covered but not monitored, mark this node as covered
+        if (left == 1 || right == 1) {
+            return 2; // Node is covered and monitored
+        }
+        
+        // If both child nodes are covered and monitored, mark this node as not covered
+        return 0;
     }
 }
